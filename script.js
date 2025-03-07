@@ -1,4 +1,5 @@
-const API_TOKEN = "0ea2bdb2e0714ed0a010339f866ae4b0";
+
+const API_TOKEN = "b0017dbcaa4542c0ad71018d25f41447";
 const BASE_URL = "https://newsapi.org/v2/everything?q=";
 
 document.addEventListener("DOMContentLoaded", () => retrieveNews("Technology"));
