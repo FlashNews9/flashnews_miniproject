@@ -4,49 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News App</title>
+    <title>News Hub</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
 </head>
 
 <body>
-    <nav>
-        <div class="main-nav container flex">
-            <a href="" class="company-logo">
-                <img src="https://cdn.vectorstock.com/i/500p/68/24/megaphone-or-loudspeaker-icon-with-latest-news-vector-27436824.jpg" alt="logo">
+    <header>
+        <nav class="navbar container flexbox">
+            <a href="#" class="brand-logo">
+                <img src="https://cdn.vectorstock.com/i/500p/68/24/megaphone-or-loudspeaker-icon-with-latest-news-vector-27436824.jpg" alt="News Logo">
             </a>
-            <h1>FLASH NEWS</h1>
-            
-           
-            
-        </div>
-    </nav>
-
+            <h1>NEWS HUB</h1>
+            <div class="search-box">
+                <input type="text" id="query" placeholder="Search latest news..." />
+                <button id="go-search">Find</button>
+            </div>
+        </nav>
+    </header>
 
     <main>
-        <div class="cards-container container flex" id="cardscontainer">
-
-
-
-        </div>
+        <section class="news-grid container flexbox" id="newsSection">
+        </section>
     </main>
 
-    <template id="template-news-card">
-        <div class="card">
-            <div class="card-header">
-                <img src="https://via.placeholder.com/400x200" alt="" id="news-img">
+    <template id="news-template">
+        <div class="news-card">
+            <div class="image-section">
+                <img src="https://via.placeholder.com/400x200" alt="News Image" id="image">
             </div>
-            <div class="card-content">
-                <h3 id="news-title">This is the Title</h3>
-                <h6 class="news-source" id="news-source">constGenius 02/02/2024</h6>
-                <p class="news-desc" id="news-desc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem
-                    incidunt ratione, dolore beatae quaerat voluptatum autem fugit voluptas minima eligendi facere
-                    tenetur cumque. Dolorem porro, fugiat distinctio a accusamus cum!</p>
+            <div class="content-section">
+                <h3 id="headline">Sample Headline</h3>
+                <h6 class="source-info" id="source">Source Name · 01/01/2025</h6>
+                <p class="news-text" id="description">Sample description text about the news article. It will be dynamically updated.</p>
             </div>
         </div>
     </template>
-
-
 </body>
 
 </html>
