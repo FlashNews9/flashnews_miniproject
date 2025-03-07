@@ -1,64 +1,67 @@
-const API_KEY = "0ea2bdb2e0714ed0a010339f866ae4b0";
-const url = "https://newsapi.org/v2/everything?q=";
+const API_TOKEN = "0ea2bdb2e0714ed0a010339f866ae4b0";
+const BASE_URL = "https://newsapi.org/v2/everything?q=";
 
-window.addEventListener("load", () => fetchNews("Technology"));
+document.addEventListener("DOMContentLoaded", () => retrieveNews("Technology"));
 
-async function fetchNews(query) {
-    const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
-    const data = await res.json();
-    bindData(data.articles);
+async function retrieveNews(topic) {
+    try {
+        const response = await fetch(`${BASE_URL}${topic}&apiKey=${API_TOKEN}`);
+        const result = await response.json();
+        displayArticles(result.articles);
+    } catch (error) {
+        console.error("Error fetching news:", error);
+    }
 }
 
-function bindData(articles) {
-    const cardsContainer = document.getElementById("cardscontainer");
-    const newsCardTemplate = document.getElementById("template-news-card");
-
-    cardsContainer.innerHTML = "";
-
+function displayArticles(articles) {
+    const newsContainer = document.getElementById("newsSection");
+    const template = document.getElementById("news-template");
+    
+    newsContainer.innerHTML = "";
+    
     articles.forEach((article) => {
         if (!article.urlToImage) return;
 
-        const cardClone = newsCardTemplate.content.cloneNode(true);
-        fillDataInCard(cardClone, article);
-        cardsContainer.appendChild(cardClone);
-    })
+        const newsClone = template.content.cloneNode(true);
+        populateCard(newsClone, article);
+        newsContainer.appendChild(newsClone);
+    });
 }
 
-function fillDataInCard(cardClone, article) {
-    const newsImg = cardClone.querySelector("#news-img");
-    const newsTitle = cardClone.querySelector("#news-title");
-    const newsSource = cardClone.querySelector("#news-source");
-    const newsDesc = cardClone.querySelector("#news-desc");
+function populateCard(newsClone, article) {
+    const imageElement = newsClone.querySelector("#image");
+    const titleElement = newsClone.querySelector("#headline");
+    const sourceElement = newsClone.querySelector("#source");
+    const descriptionElement = newsClone.querySelector("#description");
 
-    newsImg.src = article.urlToImage;
-    newsTitle.innerHTML = `${article.title.slice(0, 60)}...`;
-    newsDesc.innerHTML = `${article.description.slice(0, 150)}...`;
-
-    const date = new Date(article.publishedAt).toLocaleString("en-US", { timeZone: "Asia/Jakarta" })
-
-    newsSource.innerHTML = `${article.source.name} · ${date}`;
-
-    cardClone.firstElementChild.addEventListener("click", () => {
+    imageElement.src = article.urlToImage;
+    titleElement.textContent = `${article.title.slice(0, 60)}...`;
+    descriptionElement.textContent = `${article.description.slice(0, 150)}...`;
+    
+    const formattedDate = new Date(article.publishedAt).toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+    sourceElement.textContent = `${article.source.name} · ${formattedDate}`;
+    
+    newsClone.firstElementChild.addEventListener("click", () => {
         window.open(article.url, "_blank");
-    })
+    });
 }
 
-let curSelectedNav = null;
-function onNavItemClick(id) {
-    fetchNews(id);
-    const navItem = document.getElementById(id);
-    curSelectedNav?.classList.remove("active");
-    curSelectedNav = navItem;
-    curSelectedNav.classList.add("active");
+let activeNav = null;
+function handleNavClick(topic) {
+    retrieveNews(topic);
+    const selectedNav = document.getElementById(topic);
+    activeNav?.classList.remove("active-link");
+    activeNav = selectedNav;
+    activeNav.classList.add("active-link");
 }
 
-const searchButton = document.getElementById("search-button");
-const searchText = document.getElementById("search-text");
+const searchBtn = document.getElementById("go-search");
+const searchInput = document.getElementById("query");
 
-searchButton.addEventListener("click", () => {
-    const query = searchText.value;
-    if (!query) return;
-    fetchNews(query);
-    curSelectedNav?.classList.remove("active");
-    curSelectedNav = null;
-})
+searchBtn.addEventListener("click", () => {
+    const topic = searchInput.value.trim();
+    if (!topic) return;
+    retrieveNews(topic);
+    activeNav?.classList.remove("active-link");
+    activeNav = null;
+});
